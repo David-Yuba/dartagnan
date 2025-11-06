@@ -1,0 +1,32 @@
+.heading-cont {
+    position: relative;
+    user-select: none;
+    transition: transform 1s linear;
+}
+
+#david, #art, #design {
+    cursor: pointer;
+}
+#david, #design {
+    position: absolute;
+    opacity: 0%;
+}
+
+.pos {
+    --left-pos: 0;
+    --depth-pos: -10;
+    left: var(--left-pos);
+    z-index: var(--depth-pos);
+}
+
+.hover {
+    z-index: 10 !important;
+    opacity: 100% !important;
+}
+.not-hover {
+    opacity: 0% !important;
+}
+
+/* .heading-cont :not(:hover) {
+    opacity: 0%;
+} */

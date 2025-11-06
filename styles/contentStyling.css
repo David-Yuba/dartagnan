@@ -1,0 +1,40 @@
+#david-content, #art-content, #design-content {
+    position: absolute;
+    transition: transform 0.5s linear;
+}
+
+/* Initial content positioning */
+#david-content {
+    right: 0;
+    top: 0;
+    transform: translateX(100%);
+}
+#art-content {
+    left: 50%;
+    bottom: 0;
+    transform: translate(-50%,100%);
+
+}
+#design-content {
+    top: 0;
+    left: 0;
+    transform: translateX(-100%);
+}
+.active-content {
+    transform: translateX(0) !important;
+}
+.active-content-art {
+    transform: translate(-50%,0) !important;
+}
+.active-heading-david {
+    transform: translateX(calc((var(--screen-width) - var(--heading-width)) / -2));
+}
+.active-heading-art {
+    transform: translateY(calc((var(--screen-height) - var(--heading-height)) / -2));
+}
+.active-heading-design {
+    transform: translateX(calc((var(--screen-width) - var(--heading-width)) / 2));
+}
+.active-heading-main {
+    color: orangered;
+}
