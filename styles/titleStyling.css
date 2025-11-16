@@ -1,32 +1,41 @@
 .heading-cont {
-    position: relative;
-    user-select: none;
-    transition: transform 1s linear;
-}
+    --heading-width: 0;
+    --heading-height: 0;
 
-#david, #art, #design {
-    cursor: pointer;
-}
-#david, #design {
     position: absolute;
+    top: calc(50% - var(--heading-height) / 2);
+    left: calc(50% - var(--heading-width) / 2);
+    z-index: 10;
+    display: flex;
+
+    user-select: none;
+}
+
+.heading-cont > h1 {
+    transition: opacity 0.5s linear;
+}
+.hidden-links > h1{
+    position: absolute;
+    top: var(--link-top);
+    left: var(--link-left);
+ 
+    cursor: default;
+    user-select: none;
+    
     opacity: 0%;
+    transition: opacity 0.5s linear, top 0.5s linear, left 0.5s linear, right 0.5s linear, color 0.5s linear;
+}
+.hidden-links > h1.active-heading:nth-child(1) {
+    left: calc(var(--body-width) - var(--heading-part-width) - 32px);
+}
+.hidden-links > h1.active-heading:nth-child(2) {
+    left: calc((var(--body-width) - var(--heading-part-width)) / 2);
+    top: 32px;
+}
+.hidden-links > h1.active-heading:nth-child(3) {
+    left: 32px;
 }
 
-.pos {
-    --left-pos: 0;
-    --depth-pos: -10;
-    left: var(--left-pos);
-    z-index: var(--depth-pos);
+.event-handle-divs > div {
+    position: absolute;
 }
-
-.hover {
-    z-index: 10 !important;
-    opacity: 100% !important;
-}
-.not-hover {
-    opacity: 0% !important;
-}
-
-/* .heading-cont :not(:hover) {
-    opacity: 0%;
-} */

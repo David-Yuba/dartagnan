@@ -1,40 +1,66 @@
-#david-content, #art-content, #design-content {
+.content {
+    --content-width: 0;
+    --content-height: 0;
+
     position: absolute;
-    transition: transform 0.5s linear;
+    min-width: 50%;
+    min-height: 50%;
+    transition: left 0.5s linear, right 0.5s linear, bottom 0.5s linear;
 }
 
-/* Initial content positioning */
 #david-content {
-    right: 0;
+    min-height: 100%;
     top: 0;
-    transform: translateX(100%);
+    left: calc(var(--content-width) * -1);
 }
+#david-content.active {
+    left: calc((var(--body-width) - var(--content-width))/ 2);
+}
+
 #art-content {
-    left: 50%;
-    bottom: 0;
-    transform: translate(-50%,100%);
+    bottom: calc(var(--body-height) * -1);
+    left: calc((var(--body-width) - var(--content-width)) / 2);
 
 }
+#art-content.active {
+    bottom: calc(var(--body-height) - var(--content-height) - 96px)
+}
+
 #design-content {
+    min-height: 100%;
     top: 0;
-    left: 0;
-    transform: translateX(-100%);
+    right: calc(var(--content-width) * -1);
 }
-.active-content {
-    transform: translateX(0) !important;
+#design-content.active {
+    right: calc((var(--body-width) - var(--content-width))/ 2);
 }
-.active-content-art {
-    transform: translate(-50%,0) !important;
+
+/* Design */
+.content {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    padding: 32px;
 }
-.active-heading-david {
-    transform: translateX(calc((var(--screen-width) - var(--heading-width)) / -2));
+
+.content > :first-child {
+    text-align: center;
 }
-.active-heading-art {
-    transform: translateY(calc((var(--screen-height) - var(--heading-height)) / -2));
+
+.exit {
+    max-width: fit-content;
+    border-radius: 16px;
+    user-select: none;
 }
-.active-heading-design {
-    transform: translateX(calc((var(--screen-width) - var(--heading-width)) / 2));
+#david-content .exit {
+    align-self: flex-start;
+    margin-top: auto;
 }
-.active-heading-main {
-    color: orangered;
+#art-content .exit {
+    align-self: center;
+    margin-top: auto;
+}
+#design-content .exit {
+    align-self: flex-end;
+    margin-top: auto;
 }

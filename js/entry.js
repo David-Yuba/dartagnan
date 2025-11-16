@@ -1,181 +1,169 @@
-let headingCont;
-let david, art, design;
-let d, ap, agnan;
-
-let davidContent, artContent, designContent;
-
-let root;
-let windowWidth, windowHeight;
-
-window.addEventListener("load", main);
-window.addEventListener("resize", position);
+document.addEventListener("DOMContentLoaded", main);
+window.addEventListener("resize", onResize);
 
 function main(){
-    root = document.getElementsByTagName("body")[0];
-    windowWidth = window.innerWidth;
-    windowHeight = window.innerHeight;
-    headingCont = document.getElementsByClassName("heading-cont")[0];
-    initCSSVariables();
+    initializeCSSVariables();
+    positionHiddenLinks();
 
-    david = document.getElementById("david");
-    art = document.getElementById("art");
-    design = document.getElementById("design");
+    let body = document.getElementsByTagName("body")[0],
+        headingPartsArray = document.querySelectorAll(".heading-cont > h1"),
+        eventHandleDivs = document.querySelectorAll(".event-handle-divs > div");
 
-    headingCont.addEventListener("pointerover", onHover);
-    david.addEventListener("click",onHeadingClick);
-    art.addEventListener("click",onHeadingClick);
-    design.addEventListener("click",onHeadingClick);
+    eventHandleDivs.forEach(function(h){ 
+        if(h.innerHTML !== "'"){
+            h.addEventListener("pointerenter",onHeadingEnter);
+            h.addEventListener("pointerleave",onHeadingLeave);
+        }
+    });
 
-    davidContent = document.getElementById("david-content");
-    artContent = document.getElementById("art-content");
-    designContent = document.getElementById("design-content");
-
-    position();
+    body.addEventListener("click",onLinkClick);
 }
 
-function position(){
-    d = document.getElementById("d"), ap = document.getElementById("ap"), art = document.getElementById("art"), agnan = document.getElementById("agnan");
+function initializeCSSVariables(){
+    let body = document.getElementsByTagName("body")[0],
+        heading = document.getElementsByClassName("heading-cont")[0],
+        contentPagesArray = [...document.getElementsByClassName("content")];
 
-    david.style.setProperty("--left-pos", `${-david.getBoundingClientRect().width + d.getBoundingClientRect().width}px`);
-    design.style.setProperty("--left-pos", `${d.getBoundingClientRect().width + ap.getBoundingClientRect().width + art.getBoundingClientRect().width}px`);
+    body.style.setProperty("--body-width", `${window.innerWidth}px`);
+    body.style.setProperty("--body-height", `${window.innerHeight}px`);
+
+    contentPagesArray.forEach(function(c){
+        c.style.setProperty("--content-width", `${c.getBoundingClientRect().width}px`);
+        c.style.setProperty("--content-height", `${c.getBoundingClientRect().height}px`);
+    })
+    heading.style.setProperty("--heading-width", `${heading.getBoundingClientRect().width}px`);
+    heading.style.setProperty("--heading-height", `${heading.getBoundingClientRect().height}px`);
+}
+
+function onResize(){
+    initializeCSSVariables();
+    positionHiddenLinks();
+}
+
+function positionHiddenLinks() {
+    let hiddenLinksArray = document.querySelectorAll(".hidden-links > h1"),
+        headingPartsArray = document.querySelectorAll(".heading-cont > h1");
+    /* David */
+    hiddenLinksArray[0].style.setProperty("--link-top", `${headingPartsArray[0].getBoundingClientRect().top}px`);
+    hiddenLinksArray[0].style.setProperty("--heading-part-width", `${hiddenLinksArray[0].getBoundingClientRect().width}px`);
+    hiddenLinksArray[0].style.setProperty("--link-left", `${headingPartsArray[0].getBoundingClientRect().left + headingPartsArray[0].getBoundingClientRect().width - hiddenLinksArray[0].getBoundingClientRect().width}px`);
+    /* art */
+    hiddenLinksArray[1].style.setProperty("--link-top", `${headingPartsArray[2].getBoundingClientRect().top}px`);
+    hiddenLinksArray[1].style.setProperty("--heading-part-width", `${hiddenLinksArray[1].getBoundingClientRect().width}px`);
+    hiddenLinksArray[1].style.setProperty("--link-left", `${headingPartsArray[2].getBoundingClientRect().left}px`);
+    /* Design */
+    hiddenLinksArray[2].style.setProperty("--link-top", `${headingPartsArray[3].getBoundingClientRect().top}px`);
+    hiddenLinksArray[2].style.setProperty("--link-left", `${headingPartsArray[3].getBoundingClientRect().left}px`);
+
+    positionEventHandleDivs()
+}
+
+function positionEventHandleDivs(){
+    let eventHandleDivs = document.querySelectorAll(".event-handle-divs > div"),
+        hiddenLinksArray = document.querySelectorAll(".hidden-links > h1"),
+        headingPartsArray = [...document.querySelectorAll(".heading-cont > h1")].reduce((prev,c,i) => i === 1 ? prev : [...prev, c], []);
     
-    /*david.style.setProperty("--left-pos", `${d.getBoundingClientRect().left - david.clientWidth + d.clientWidth}px`);
-    design.style.setProperty("--left-pos", `${agnan.getBoundingClientRect().left}px`); */
+    headingPartsArray.forEach(function(link,i){
+        eventHandleDivs[i].style.zIndex = `100`;
+        eventHandleDivs[i].style.top = `${link.getBoundingClientRect().top}px`;
+        eventHandleDivs[i].style.left = `${link.getBoundingClientRect().left}px`;
+        eventHandleDivs[i].style.width = `${link.getBoundingClientRect().width}px`;
+        eventHandleDivs[i].style.height = `${link.getBoundingClientRect().height}px`;
+    })
 }
 
-function onHover(e){
+function onHeadingEnter(e){
+    let target = e.target,
+        hiddenLinksArray = document.querySelectorAll(".hidden-links > h1"),
+        eventHandleDivs = document.querySelectorAll(".event-handle-divs > div"),
+        headingPartsArray = document.querySelectorAll(".heading-cont > h1");
+
+    hiddenLinksArray.forEach(function(link,i){
+        eventHandleDivs[i].style.top = `${link.getBoundingClientRect().top}px`;
+        eventHandleDivs[i].style.left = `${link.getBoundingClientRect().left}px`;
+        eventHandleDivs[i].style.width = `${link.getBoundingClientRect().width}px`;
+        eventHandleDivs[i].style.height = `${link.getBoundingClientRect().height}px`;
+    })
+
+    headingPartsArray.forEach(function(h){
+            h.style.opacity = "0%";
+    });
+    hiddenLinksArray[parseInt(target.dataset.index)].style.opacity = "100%";
+    hiddenLinksArray[parseInt(target.dataset.index)].style.color = "orangered";
+}
+
+function onHeadingLeave(e){
+    let target = e.target,
+        hiddenLinksArray = document.querySelectorAll(".hidden-links > h1"),
+        eventHandleDivs = document.querySelectorAll(".event-handle-divs > div"),
+        headingPartsArray = document.querySelectorAll(".heading-cont > h1");
+
+    [...headingPartsArray].reduce((prev,c,i) => i === 1 ? prev : [...prev, c], [])
+        .forEach(function(link,i){
+            eventHandleDivs[i].style.top = `${link.getBoundingClientRect().top}px`;
+            eventHandleDivs[i].style.left = `${link.getBoundingClientRect().left}px`;
+            eventHandleDivs[i].style.width = `${link.getBoundingClientRect().width}px`;
+            eventHandleDivs[i].style.height = `${link.getBoundingClientRect().height}px`;
+        })
+
+    headingPartsArray.forEach(function(h){
+            h.style.opacity = "100%";
+    });
+    hiddenLinksArray[parseInt(target.dataset.index)].style.opacity = "0%";
+}
+
+function onLinkClick(e){
     let target = e.target;
-    let id = target.id === "d" ? 0 : target.id === "art" ? 1 : target.id === "agnan" ? 2 : -1
+    if(!target.dataset.index) return;
     
-    switch(id){
-        case 0:{ // david
-            david.className = ("pos hover");
+    let body = document.getElementsByTagName("body")[0],
+        eventHandleDivs = document.querySelectorAll(".event-handle-divs > div"),
+        hiddenLinksArray = document.querySelectorAll(".hidden-links > h1"),
+        contentPagesArray = document.getElementsByClassName("content"),
+        exitButton = contentPagesArray[parseInt(target.dataset.index)].getElementsByClassName("exit")[0];
 
-            d.className = ("not-hover");
-            ap.className = ("not-hover");
-            art.className = ("not-hover");
-            agnan.className = ("not-hover");
-
-            david.addEventListener("pointerleave",handleLeave);
-            
-            function handleLeave(){
-                david.className = ("pos not-hover");
-
-                d.className = ("hover");
-                ap.className = ("hover");
-                art.className = ("hover");
-                agnan.className = ("hover");
-
-                david.removeEventListener("pointerleave",handleLeave);
-            }
-
-            break;
+    
+    eventHandleDivs.forEach(function(p){
+        if(p.innerHTML !== "'"){
+            p.removeEventListener("pointerenter",onHeadingEnter);
+            p.removeEventListener("pointerleave",onHeadingLeave);
         }
-        case 1:{ // art
-            art.className = ("hover");
-
-            d.className = ("not-hover");
-            ap.className = ("not-hover");
-            agnan.className = ("not-hover");
-
-            art.addEventListener("pointerleave",handleLeave);
-            
-            function handleLeave(){
-                art.className = ("pos not-hover");
-
-                d.className = ("hover");
-                ap.className = ("hover");
-                art.className = ("hover");
-                agnan.className = ("hover");
-
-                art.removeEventListener("pointerleave",handleLeave);
-            }
-            
-            break;
-        }
-        case 2:{ // design
-            design.className = ("pos hover");
-
-            d.className = ("not-hover");
-            ap.className = ("not-hover");
-            art.className = ("not-hover");
-            agnan.className = ("not-hover");
-
-            design.addEventListener("pointerleave",handleLeave);
-            
-            function handleLeave(){
-                design.className = ("pos not-hover");
-
-                d.className = ("hover");
-                ap.className = ("hover");
-                art.className = ("hover");
-                agnan.className = ("hover");
-
-                design.removeEventListener("pointerleave",handleLeave);
-            }
-
-            break;
-        }
-        default : 
-            break;
-    }
+    })
+    body.removeEventListener("click",onLinkClick);
+    hiddenLinksArray[parseInt(target.dataset.index)].removeEventListener("pointerleave",onHeadingLeave);
+    
+    hiddenLinksArray[parseInt(target.dataset.index)].style.color = "black";
+    hiddenLinksArray[parseInt(target.dataset.index)].classList.add("active-heading");
+    contentPagesArray[parseInt(target.dataset.index)].classList.add("active");
+    exitButton.addEventListener("click",onExitClick);
 }
 
-function onHeadingClick(e){
-    let headingId = e.target.id;
-    switch(headingId){
-        case "david":
-            davidContent.classList.toggle("active-content");
-            artContent.classList.remove("active-content-art");
-            designContent.classList.remove("active-content");
-            
-            headingCont.classList.toggle("active-heading-david");
-            headingCont.classList.remove("active-heading-art");
-            headingCont.classList.remove("active-heading-design");
-
-            if(d.style.color === "black" || d.style.color === "") 
-                d.style.color="orangered";
-            else d.style.color="black";
-            art.style.color="black";
-            agnan.style.color="black";
-            break;
-        case "art":
-            davidContent.classList.remove("active-content");
-            artContent.classList.toggle("active-content-art");
-            designContent.classList.remove("active-content");
-            
-            headingCont.classList.remove("active-heading-david");
-            headingCont.classList.toggle("active-heading-art");
-            headingCont.classList.remove("active-heading-design");
-
-            d.style.color="black";
-            console.log(art.style.color)
-            if(art.style.color === "black" || art.style.color === "") 
-                art.style.color="orangered";
-            else art.style.color="black";
-            agnan.style.color="black";
-            break;
-        case "design":
-            davidContent.classList.remove("active-content");
-            artContent.classList.remove("active-content-art");
-            designContent.classList.toggle("active-content");
-
-            headingCont.classList.remove("active-heading-david");
-            headingCont.classList.remove("active-heading-art");
-            headingCont.classList.toggle("active-heading-design");
-            
-            d.style.color="black";
-            art.style.color="black";
-            if(agnan.style.color === "black" || agnan.style.color === "") 
-                agnan.style.color="orangered";
-            else agnan.style.color="black";
-            break;
-    }
-}
-
-function initCSSVariables(){
-    root.style.setProperty("--screen-width", `${windowWidth}px`);
-    root.style.setProperty("--screen-height", `${windowHeight}px`);
-    root.style.setProperty("--heading-height", `${headingCont.getBoundingClientRect().height}px`);
-    root.style.setProperty("--heading-width", `${headingCont.getBoundingClientRect().width}px`);
+function onExitClick(e){
+    e.stopPropagation();
+    let body = document.getElementsByTagName("body")[0],
+        eventHandleDivs = document.querySelectorAll(".event-handle-divs > div"),
+        hiddenLinksArray = document.querySelectorAll(".hidden-links > h1"),
+        headingPartsArray = document.querySelectorAll(".heading-cont > h1"),
+        contentPagesArray = document.querySelectorAll(".content");
+    
+    eventHandleDivs.forEach(function(h){ 
+        if(h.innerHTML !== "'"){
+            h.addEventListener("pointerenter",onHeadingEnter);
+            h.addEventListener("pointerleave",onHeadingLeave);
+        }
+        h.style.opacity = "100%";
+    });
+    headingPartsArray.forEach(function(h){ 
+        h.style.opacity = "100%";
+    });
+    hiddenLinksArray.forEach(function(h){ 
+        h.style.opacity = "0%";
+        h.style.zIndex = "0";
+        h.classList.remove("active-heading");
+    });
+    body.addEventListener("click",onLinkClick);
+    contentPagesArray.forEach(function(p){
+        p.classList.remove("active");
+    })
+    e.target.removeEventListener("click",onExitClick)
 }

@@ -1,18 +1,64 @@
 body {
+    --body-width: 0;
+    --body-height: 0;
+    width: var(--body-width);
+    height: var(--body-height);
+
     overflow: hidden;
-    height: 100vh;
-
-    display: flex;
-    justify-content: center;
-    align-items: center;
-
-    font-family: var(--font);
+}
+h1 {
+    font-size: 4rem;
+}
+h2 {
+    font-size: 2rem;
+}
+h3 {
+    font-size: 1.7rem;
+}
+h4 {
+    font-size: 1.5rem;
+}
+h5 {
+    font-size: 1.4rem;
+}
+h6 {
+    font-size: 1.3rem;
+}
+p {
+    font-size: 1.1rem;
+}
+li {
+    font-size: 1.1rem;
+}
+a {
+    text-decoration: underline;
+    transition: color 0.5s linear;
+}
+a:hover {
+    color: coral;
+}
+/* Text spacing */
+h2:not(:last-child), h3:not(:last-child), h4:not(:last-child), h5:not(:last-child), h6:not(:last-child) {
+    margin-bottom: 8px;
+}
+h2:not(:last-child) {
 
 }
+h3:not(:last-child) {
 
-h1 {
-    display: inline-block;
-    font-size: 6rem;
+}
+h4:not(:last-child) {
 
-    transition: opacity 0.5s linear;
+}
+h5:not(:last-child) {
+
+}
+h6:not(:last-child) {
+
+}
+p:not(:last-child) {
+    margin-bottom: 4px;
+}
+li:not(:last-child){
+    margin-bottom: 4px;
 }
